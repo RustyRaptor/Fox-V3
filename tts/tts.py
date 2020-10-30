@@ -36,4 +36,9 @@ class TTS(Cog):
         tts = gTTS(text, lang="en")
         tts.write_to_fp(mp3_fp)
         mp3_fp.seek(0)
-        await ctx.send(file=discord.File(mp3_fp, "text.mp3"))
+        # await ctx.send(file=discord.File(mp3_fp, "text.mp3"))
+        source = discord.PCMVolumeTransformer(
+            discord.FFmpegPCMAudio("text.mp3"))
+        ctx.voice_client.play(
+            source, after=lambda e: print("Player error: %s" % e) if e else None
+        )
